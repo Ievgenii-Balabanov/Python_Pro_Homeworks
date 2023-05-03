@@ -18,6 +18,7 @@ class FootballPlayer:
 
     def check_ascii(self, param):
         if type(param) == str:
+            # я не нашел такого метода
             if param.isascii():
                 return param
             return Exception("String is not ascii!")
