@@ -17,38 +17,16 @@ class FootballPlayer:
         self.position = self.check_ascii(position)
 
     def check_ascii(self, param):
-        if isinstance(param, str):
+        if isinstance(param, str) and param.isascii():
             return param
-        else:
-            return Exception("Incorrect data")
+        return Exception("String is not ascii!")
 
 
-def validate_alphabetical(form_input, error_key, error_dict=None):
-    if form_input.isupper():
+def validate_isalpha(form_input):
+    # валидация являются ли вводимые значения символами
+    if form_input.isalpha() and len(form_input) in range(2, 20):
         return form_input
-    error_dict[error_key] = "Verbose error description"
-
-
-@app.route("/login", methods=["GET", "POST"])
-def login_player():
-    error_dict = {}
-
-    name = validate_alphabetical(request.form.get("name"), "name", error_dict)
-    position = request.form.get("position")
-
-    if error_dict:
-        return f"""
-            {error_dict['name']}
-        """
-
-    try:
-        global player
-        player = FootballPlayer(name, position)
-        return redirect("/")
-    except:
-        return f"""
-            Name or position is not in ascii
-        """
+    return Exception("Isn't alpha")
 
 
 @app.route("/")
@@ -78,7 +56,6 @@ def display_info():
                 <div>
                     <input type="radio" id="contactChoice1" name="contact" value="PSG"  />
                     <label for="contactChoice1">PSG</label>
-
                     <input type="radio" id="contactChoice2" name="contact" value="Parma" />
                     <label for="contactChoice2">Parma</label>
 
@@ -103,6 +80,7 @@ def display_info():
 
 @app.route("/add_name", methods=["POST"])
 def add_name():
+    # присваиваем имя инстанса
     item = request.form.get('name')
     player.name = item
     return f"""
@@ -115,12 +93,12 @@ def add_name():
 
 @app.route("/add_position", methods=["POST"])
 def add_position():
+    # присваиваем позицию инстанса
     item = request.form.get('position')
     player.position = item
     return f"""
         <h3>Player position: {player.name, player.position, player.club, player.transfer_fee}</h3>
         <h4>Position: {item}</h4>
-
         </br>
         <a href="/">Return to the HOME page</a>
     """
@@ -128,6 +106,7 @@ def add_position():
 
 @app.route("/add_club", methods=["POST"])
 def add_club():
+    # устанавливаем клуб инстанса
     try:
         contact = request.form.get('contact')
         player.club = contact
@@ -144,6 +123,7 @@ def add_club():
 
 @app.route("/add_fee", methods=["POST"])
 def add_fee():
+    # присваиваем возможную рыночную стоимость инстанса
     user_input = False
     try:
         item = int(request.form.get('item'))
@@ -162,6 +142,17 @@ def add_fee():
 
 
 player = FootballPlayer(name="", position="")
+
+# некоторые проверки кооректной работы валидаторов
+print(player.check_ascii("Some text")) # --> must be ok
+print(player.check_ascii(111)) # --> must be NOT ok
+print(validate_isalpha("@#")) # --> must be NOT ok
+print(validate_isalpha("123")) # --> must be NOT ok
+print(validate_isalpha("qwert")) # --> must be ok
+print(validate_isalpha("aaaaa")) # --> must be ok
+print(validate_isalpha("aaaaaaaaaaaaaaaaaaaaa")) # --> must be NOT ok
+print(validate_isalpha("aaaaaaaaaaaaaaaaaaaaaaaa")) # --> must be NOT ok
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8000, debug=True)
