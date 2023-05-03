@@ -1,7 +1,9 @@
-from flask import Flask, request
+from flask import Flask, request, redirect
 from random import randint
 
 app = Flask(__name__)
+
+player = None
 
 
 class FootballPlayer:
@@ -10,25 +12,43 @@ class FootballPlayer:
     club = ""
     transfer_fee = ""
 
-    # def __init__(self, name, position):
-    #     self.__name = name
-    #     self.__position = position
-
     def __init__(self, name, position):
-        self.name = self.check_name(name)
-        self.position = self.check_position(position)
+        self.name = self.check_ascii(name)
+        self.position = self.check_ascii(position)
 
-    def check_name(self, name):
-        if len(name) > 2:
-            return name
-        else:
-            print("Incorrect data")
+    def check_ascii(self, param):
+        if type(param) == str:
+            if param.isascii():
+                return param
+            return Exception("String is not ascii!")
 
-    def check_position(self, position):
-        if len(position) > 2:
-            return position
-        else:
-            print("Incorrect data")
+
+def validate_alphabetical(form_input, error_key, error_dict=None):
+    if form_input.isalpha():
+        return form_input
+    error_dict[error_key] = "Verbose error description"
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login_player():
+    error_dict = {}
+
+    name = validate_alphabetical(request.form.get("name"), "name", error_dict)
+    position = request.form.get("position")
+
+    if error_dict:
+        return f"""
+            {error_dict['name']}
+        """
+
+    try:
+        global player
+        player = FootballPlayer(name, position)
+        return redirect("/")
+    except:
+        return f"""
+            Name or position is not in ascii
+        """
 
 
 @app.route("/")
