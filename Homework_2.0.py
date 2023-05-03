@@ -17,15 +17,14 @@ class FootballPlayer:
         self.position = self.check_ascii(position)
 
     def check_ascii(self, param):
-        if type(param) == str:
-            # я не нашел такого метода
-            if param.isascii():
-                return param
-            return Exception("String is not ascii!")
+        if isinstance(param, str):
+            return param
+        else:
+            return Exception("Incorrect data")
 
 
 def validate_alphabetical(form_input, error_key, error_dict=None):
-    if form_input.isalpha():
+    if form_input.isupper():
         return form_input
     error_dict[error_key] = "Verbose error description"
 
@@ -60,7 +59,7 @@ def display_info():
         <form action="/add_name" method="POST">
             <div>
                 <label for="new_item">Please enter the name of the player</label>
-                <input name="item" id="new_item" value="Enter the name" />
+                <input name="name" id="new_item" value="" />
             </div>
                 <button>Submit</button>
         </form>
@@ -68,7 +67,7 @@ def display_info():
         <form action="/add_position" method="POST">
             <div>
                 <label for="new_item">Please specify the position of the player (e.g. GK, CB, CM, ST, LW, CAM)</label>
-                <input name="item" id="new_item" value="Specify the position" />
+                <input name="position" id="new_position" value="" />
             </div>
                 <button>Submit</button>
         </form>
@@ -104,7 +103,7 @@ def display_info():
 
 @app.route("/add_name", methods=["POST"])
 def add_name():
-    item = request.form.get('item')
+    item = request.form.get('name')
     player.name = item
     return f"""
     <h3>Player information: {player.name, player.position, player.club, player.transfer_fee}</h3>
@@ -116,7 +115,7 @@ def add_name():
 
 @app.route("/add_position", methods=["POST"])
 def add_position():
-    item = request.form.get('item')
+    item = request.form.get('position')
     player.position = item
     return f"""
         <h3>Player position: {player.name, player.position, player.club, player.transfer_fee}</h3>
