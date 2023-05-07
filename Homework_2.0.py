@@ -19,14 +19,35 @@ class FootballPlayer:
     def check_ascii(self, param):
         if isinstance(param, str) and param.isascii():
             return param
-        return Exception("String is not ascii!")
+        return Exception(f"Expected ascii string, received: {param}")
 
 
 def validate_isalpha(form_input):
-    # валидация являются ли вводимые значения символами
-    if form_input.isalpha() and len(form_input) in range(2, 20):
+    """
+    валидация являются ли вводимые значения символами
+    :param form_input:
+    :return:
+    """
+    if form_input.isalpha() and 1 < len(form_input) < 21:
         return form_input
     return Exception("Isn't alpha")
+
+
+def validate_isupper(form_input):
+    if form_input.isalpha() and 1 < len(form_input) < 5 and form_input.isupper():
+        return form_input
+    return Exception("Position data isn't correct!")
+
+
+def validate_isdigit(form_input):
+    try:
+        form_input = int(form_input)
+        if form_input > 0:
+            return form_input
+        return Exception("Fee value isn't correct!")
+    except ValueError:
+        return "Data value isn't correct!"
+
 
 
 @app.route("/")
@@ -80,12 +101,15 @@ def display_info():
 
 @app.route("/add_name", methods=["POST"])
 def add_name():
-    # присваиваем имя инстанса
-    item = request.form.get('name')
-    player.name = item
+    """
+    присваиваем имя инстанса
+    :return:
+    """
+    item_name = request.form.get('name')
+    player.name = item_name
     return f"""
     <h3>Player information: {player.name, player.position, player.club, player.transfer_fee}</h3>
-    <h4>Name: {item}</h4>
+    <h4>Name: {item_name}</h4>
     </br>
     <a href="/">Return to the HOME page</a>
     """
@@ -93,12 +117,15 @@ def add_name():
 
 @app.route("/add_position", methods=["POST"])
 def add_position():
-    # присваиваем позицию инстанса
-    item = request.form.get('position')
-    player.position = item
+    """
+    присваиваем позицию инстанса
+    :return:
+    """
+    item_position = request.form.get('position')
+    player.position = item_position
     return f"""
         <h3>Player position: {player.name, player.position, player.club, player.transfer_fee}</h3>
-        <h4>Position: {item}</h4>
+        <h4>Position: {item_position}</h4>
         </br>
         <a href="/">Return to the HOME page</a>
     """
@@ -106,7 +133,10 @@ def add_position():
 
 @app.route("/add_club", methods=["POST"])
 def add_club():
-    # устанавливаем клуб инстанса
+    """
+    устанавливаем клуб инстанса
+    :return:
+    """
     try:
         contact = request.form.get('contact')
         player.club = contact
@@ -123,19 +153,22 @@ def add_club():
 
 @app.route("/add_fee", methods=["POST"])
 def add_fee():
-    # присваиваем возможную рыночную стоимость инстанса
+    """
+    присваиваем возможную рыночную стоимость инстанса
+    :return:
+    """
     user_input = False
     try:
-        item = int(request.form.get('item'))
+        item_fee = int(request.form.get('item'))
         user_input = True
     except ValueError:
-        item = randint(1, 100)
-    player.transfer_fee = str(item)
+        item_fee = randint(1, 100)
+    player.transfer_fee = str(item_fee)
 
     return f"""
         <h3>Football player information: {player.name, player.position, player.club, player.transfer_fee}</h3>
         </br>
-        <h4>Transfer fee {'(added by user): ' if user_input else '(random integer): '}{item} millions euros</h4>
+        <h4>Transfer fee {'(added by user): ' if user_input else '(random integer): '}{item_fee} millions euros</h4>
         </br>
         <a href="/">Return to the HOME page</a>
     """
@@ -143,7 +176,10 @@ def add_fee():
 
 player = FootballPlayer(name="", position="")
 
-# некоторые проверки кооректной работы валидаторов
+
+"""
+некоторые проверки кооректной работы валидаторов
+"""
 print(player.check_ascii("Some text")) # --> must be ok
 print(player.check_ascii(111)) # --> must be NOT ok
 print(validate_isalpha("@#")) # --> must be NOT ok
@@ -152,8 +188,12 @@ print(validate_isalpha("qwert")) # --> must be ok
 print(validate_isalpha("aaaaa")) # --> must be ok
 print(validate_isalpha("aaaaaaaaaaaaaaaaaaaaa")) # --> must be NOT ok
 print(validate_isalpha("aaaaaaaaaaaaaaaaaaaaaaaa")) # --> must be NOT ok
+print(validate_isupper("QQQQ")) # --> must be ok
+print(validate_isdigit(1)) # --> must be ok
+print(validate_isdigit(-123)) # --> must be NOT ok
+print(validate_isdigit("qwerty")) # --> must be NOT ok
 
-
+#
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8000, debug=True)
 
