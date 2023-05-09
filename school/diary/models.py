@@ -9,3 +9,4 @@ class FootballPlayer(models.Model):
     position = models.CharField(max_length=5)
     transfer_fee = views.add_fee()
 
+
