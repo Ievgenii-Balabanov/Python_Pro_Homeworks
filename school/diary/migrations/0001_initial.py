@@ -18,6 +18,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=20)),
                 ('position', models.CharField(max_length=5)),
                 ('transfer_fee', models.IntegerField()),
+                ('club', models.CharField(max_length=2)),
             ],
         ),
     ]

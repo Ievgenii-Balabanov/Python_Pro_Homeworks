@@ -2,6 +2,8 @@ from django.http import HttpResponse
 import random
 from django.shortcuts import render
 
+from .models import FootballPlayer
+
 # Create your views here.
 
 index_template = f"""
@@ -31,8 +33,6 @@ index_template = f"""
                     <button>Submit</button>
                 </div>
             </fieldset>
-            
-            <form action="/add_fee" method="POST">
             <div>
                 <label for="new_item">Please specify transfer fee otherwise computer will do it for you</label>
                 <input name="fee" id="new_item" value="" />
@@ -47,18 +47,6 @@ def index(request):
     return HttpResponse(index_template)
 
 
-# def login(request):
-#     if request.POST:
-#         name = request.POST.get("name")
-#         position = request.POST.get("position")
-#         club = request.POST.get("contact")
-#         transfer_fee = request.POST.get("transfer_fee")
-#         response = f"Player Name: {name}, Position: {position}, Club: {club}, " \
-#                    f"Transfer fee: {transfer_fee} millions euros"
-#     else:
-#         response = "Please create a player"
-#     return HttpResponse(response)
-
 def login(request):
     if request.POST:
         name = request.POST.get("name")
@@ -66,23 +54,16 @@ def login(request):
         club = request.POST.get("contact")
         user_input = False
         try:
-            transfer_fee = request.POST.get('fee')
+            transfer_fee = int(request.POST.get('fee'))
             user_input = True
         except ValueError:
             transfer_fee = random.randrange(1, 100)
         response = f"Player Name: {name}, Position: {position}, Club: {club}, " \
                    f"Transfer fee {'(added by user): ' if user_input else '(random integer): '}{transfer_fee} millions euros"
+        print(response)
+        diary_footballplayer = FootballPlayer(name=name, position=position, club=club, transfer_fee=transfer_fee)
+        diary_footballplayer.save()
     else:
         response = "Please create a player"
     return HttpResponse(response)
 
-
-def add_fee(request):
-    user_input = False
-    try:
-        transfer_fee = request.POST.get('fee')
-        user_input = True
-    except ValueError:
-        transfer_fee = random.randrange(1, 100)
-    response = f"Transfer fee {'(added by user): ' if user_input else '(random integer): '}{transfer_fee} millions euros"
-    return HttpResponse(response)
