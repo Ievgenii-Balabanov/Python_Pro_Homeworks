@@ -71,6 +71,10 @@ def index(request):
 #     return HttpResponse(response)
 
 def add_name(request):
+    """
+        присваиваем имя инстанса
+        :return:
+        """
     if request.POST:
         name = request.POST.get("name")
         response = f"Player Name: {name}"
@@ -82,6 +86,10 @@ def add_name(request):
 
 
 def add_position(request):
+    """
+        присваиваем позицию инстанса
+        :return:
+        """
     if request.POST:
         position = request.POST.get("position")
         response = f"Position on the field: {position}"
@@ -93,6 +101,10 @@ def add_position(request):
 
 
 def add_club(request):
+    """
+        устанавливаем клуб инстанса
+        :return:
+        """
     if request.POST:
         club = request.POST.get("club")
         response = f"Player club: {club}"
@@ -104,6 +116,10 @@ def add_club(request):
 
 
 def add_fee(request):
+    """
+        присваиваем возможную рыночную стоимость инстанса
+        :return:
+        """
     if request.POST:
         user_input = False
         try:
