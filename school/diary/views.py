@@ -134,3 +134,24 @@ def add_fee(request):
         response = "Please create a player"
     return HttpResponse(response)
 
+
+def add_achievements(request):
+    """
+        вносим достижения инстанса
+        :return:
+        """
+    if request.POST:
+        achievements = request.POST.get("achievements")
+        response = f"Player club: {achievements}"
+        diary_football_player = FootballPlayer(achievements=achievements)
+        diary_football_player.save()
+    else:
+        response = "Please create a player"
+    return HttpResponse(response)
+
+
+def football_player(request):
+
+    player = FootballPlayer.objects.all()
+    return HttpResponse(player)
+
