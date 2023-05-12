@@ -11,8 +11,12 @@ class FootballPlayer(models.Model):
     name = models.CharField(max_length=20)
     position = models.CharField(max_length=5)
     transfer_fee = models.IntegerField(default=0)
-    club = models.CharField(max_length=3)
+    club = models.CharField(max_length=15)
     achievements = models.CharField(max_length=300)
+
+    def __str__(self):
+        return f"Name: {self.name}, Position: {self.position}, Club: {self.club}, " \
+               f"Market value: {self.transfer_fee}, Achievements: {self.achievements}"
 
 
 def validate_isalpha(form_input):
