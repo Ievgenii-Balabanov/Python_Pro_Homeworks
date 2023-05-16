@@ -22,15 +22,25 @@ index_template = f"""
                 <label for="contactChoice1">PSG</label>
                 <input type="radio" id="contactChoice2" name="contact" value="Parma" />
                 <label for="contactChoice2">Parma</label>
-
                 <input type="radio" id="contactChoice3" name="contact" value="Juventus" />
-                <label for="contactChoice2">Juventus</label>
+                <label for="contactChoice3">Juventus</label>
+                <input type="radio" id="contactChoice3" name="contact" value="Milan" />
+                <label for="contactChoice4">Milan</label>
+                <input type="radio" id="contactChoice3" name="contact" value="Barcelona" />
+                <label for="contactChoice5">Barcelona</label>
+                <input type="radio" id="contactChoice3" name="contact" value="Real Madrid" />
+                <label for="contactChoice6">Real Madrid</label>
             </div>
         </fieldset>
         
         <div>
             <label for="new_item">Please specify transfer fee otherwise computer will do it for you</label>
             <input name="fee" id="new_item" value="" />
+        </div>
+        
+        <div>
+            <label for="new_item">Specify achievements</label>
+            <input name="achievements" id="new_item" value="" />
         </div>
             <button>Send my choice</button>
     </form>
@@ -55,15 +65,25 @@ update_template = f"""
                 <label for="contactChoice1">PSG</label>
                 <input type="radio" id="contactChoice2" name="contact" value="Parma" />
                 <label for="contactChoice2">Parma</label>
-
                 <input type="radio" id="contactChoice3" name="contact" value="Juventus" />
                 <label for="contactChoice2">Juventus</label>
+                <input type="radio" id="contactChoice3" name="contact" value="Milan" />
+                <label for="contactChoice4">Milan</label>
+                <input type="radio" id="contactChoice3" name="contact" value="Barcelona" />
+                <label for="contactChoice5">Barcelona</label>
+                <input type="radio" id="contactChoice3" name="contact" value="Real Madrid" />
+                <label for="contactChoice6">Real Madrid</label>
             </div>
         </fieldset>
         <p>
         <div>
             <label for="new_item">Specify new market value</label>
             <input name="fee" id="new_item" value=""/>
+        </div>
+        <p>
+        <div>
+            <label for="new_item">Specify achievements</label>
+            <input name="achievements" id="new_item" value="" />
         </div>
         <p>
             <button>Send my choice</button>
@@ -84,6 +104,7 @@ def login(request):
         name = request.POST.get("name")
         position = request.POST.get("position")
         club = request.POST.get("contact")
+        achievements = request.POST.get("achievements")
         user_input = False
         try:
             transfer_fee = int(request.POST.get('fee'))
@@ -92,9 +113,25 @@ def login(request):
             transfer_fee = random.randrange(1, 100)
         response = f"Player Name: {name}, Position: {position}, Club: {club}, " \
                    f"Transfer fee {'(added by user): ' if user_input else '(random integer): '}" \
-                   f"{transfer_fee} millions euros"
+                   f"{transfer_fee} millions euros, Achievements: {achievements}"
 
-        diary_football_player = FootballPlayer(name=name, position=position, club=club, transfer_fee=transfer_fee)
+        diary_football_player = FootballPlayer(name=name, position=position, club=club, transfer_fee=transfer_fee,
+                                               achievements=achievements)
+        diary_football_player.save()
+    else:
+        response = "Please create a player"
+    return HttpResponse(response)
+
+
+def add_achievements(request):
+    """
+        вносим достижения инстанса
+        :return:
+        """
+    if request.POST:
+        achievements = request.POST.get("achievements")
+        response = f"Player club: {achievements}"
+        diary_football_player = FootballPlayer(achievements=achievements)
         diary_football_player.save()
     else:
         response = "Please create a player"
@@ -119,5 +156,12 @@ def param_update(request):
         football_player.position = request.POST.get("position")
         football_player.club = request.POST.get("contact")
         football_player.transfer_fee = int(request.POST.get('fee'))
+        football_player.achievements = request.POST.get("achievements")
         football_player.save()
     return HttpResponse(update_template)
+
+
+def football_player(request):
+
+    player = FootballPlayer.objects.all()
+    return HttpResponse(player)

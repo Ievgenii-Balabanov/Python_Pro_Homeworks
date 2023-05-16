@@ -3,12 +3,17 @@ from django.db import models
 
 class FootballPlayer(models.Model):
     """
-    класс FootballPlayer хранящий 4 параметра для создания инстанса
+    класс FootballPlayer хранящий параметры для создания инстанса
     """
     name = models.CharField(max_length=20)
     position = models.CharField(max_length=5, null=True)
     transfer_fee = models.IntegerField(default=0)
-    club = models.CharField(max_length=3, null=True, blank=True)
+    club = models.CharField(max_length=13, null=True, blank=True)
+    achievements = models.CharField(max_length=300, null=True, blank=True)
+
+    def __str__(self):
+        return f"Name: {self.name}, Position: {self.position}, Club: {self.club}, " \
+               f"Market value: {self.transfer_fee}, Achievements: {self.achievements}"
 
 
 def validate_isalpha(form_input):
@@ -19,7 +24,7 @@ def validate_isalpha(form_input):
     """
     if form_input.isalpha() and 1 < len(form_input) < 21:
         return form_input
-    return Exception("Incorrect data")
+    return Exception("Data isn't alpha or out of range")
 
 
 def validate_isupper(form_input):
