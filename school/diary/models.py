@@ -1,7 +1,4 @@
 from django.db import models
-from django.utils.translation import gettext_lazy as _
-
-# Create your models here.
 
 
 class FootballPlayer(models.Model):
@@ -22,7 +19,7 @@ def validate_isalpha(form_input):
     """
     if form_input.isalpha() and 1 < len(form_input) < 21:
         return form_input
-    return Exception("Isn't alpha")
+    return Exception("Incorrect data")
 
 
 def validate_isupper(form_input):
