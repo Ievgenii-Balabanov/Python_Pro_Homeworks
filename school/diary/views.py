@@ -179,12 +179,16 @@ def footballer(request, football_player_id):
 
 def achievements(request):
     ach_template = loader.get_template("diary/achievements_detail.html")
-    context_achiev = {
+    context_achievemnts = {
         "achiev": Achievement.objects.all()
     }
-    return HttpResponse(ach_template.render(context_achiev, request))
+    return HttpResponse(ach_template.render(context_achievemnts, request))
 
 
-def achievements_detail(request, football_player_achievements_id):
-    reaching = get_object_or_404(Achievement, pk=football_player_achievements_id)
-    return render(request, "diary/achievements_detail.html", {"football_player_achievements": reaching})
+def achievements_detail(request, achievements_id):
+    reaching = Achievement.objects.get(pk=achievements_id)
+    return render(request, "diary/achievements_detail.html", {"achievement": reaching})
+
+# def achievements_detail(request, achievements_id):
+#     reaching = Achievement.objects.get(pk=achievements_id)
+#     return render(request, "diary/achievements_detail.html", {"Achievement": reaching})

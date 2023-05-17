@@ -1,3 +1,17 @@
+{#{% extends "./info_football_player.html" %}#}
+{##}
+{#{% block title %}#}
+{#    <h2>Achievements</h2>#}
+{#{% endblock title %}#}
+{##}
+{#{% block main_part %}#}
+{#    <ul>#}
+{#        {% for a in achievement_set.all %}#}
+{#            <li>{{ a.achievement }}</li>#}
+{#        {% endfor %}#}
+{#    </ul>#}
+{#{% endblock %}#}
+
 {% extends "./info_football_player.html" %}
 
 {% block title %}
