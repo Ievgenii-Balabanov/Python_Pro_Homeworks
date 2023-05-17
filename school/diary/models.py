@@ -9,11 +9,10 @@ class FootballPlayer(models.Model):
     position = models.CharField(max_length=5, null=True)
     transfer_fee = models.IntegerField(default=0)
     club = models.CharField(max_length=13, null=True, blank=True)
-    achievements = models.CharField(max_length=300, null=True, blank=True)
 
     def __str__(self):
         return f"Name: {self.name}, Position: {self.position}, Club: {self.club}, " \
-               f"Market value: {self.transfer_fee}, Achievements: {self.achievements}"
+               f"Market value: {self.transfer_fee}"
 
 
 def validate_isalpha(form_input):
@@ -54,16 +53,7 @@ def validate_isdigit(form_input):
         return "Data value isn't correct!"
 
 
-"""
-некоторые проверки кооректной работы валидаторов
-"""
-# print(validate_isalpha("@#")) # --> must be NOT ok
-# print(validate_isalpha("123")) # --> must be NOT ok
-# print(validate_isalpha("qwert")) # --> must be ok
-# print(validate_isalpha("aaaaa")) # --> must be ok
-# print(validate_isalpha("aaaaaaaaaaaaaaaaaaaaa")) # --> must be NOT ok
-# print(validate_isalpha("aaaaaaaaaaaaaaaaaaaaaaaa")) # --> must be NOT ok
-# print(validate_isupper("QQQQ")) # --> must be ok
-# print(validate_isdigit(1)) # --> must be ok
-# print(validate_isdigit(-123)) # --> must be NOT ok
-# print(validate_isdigit("qwerty")) # --> must be NOT ok
+class Achievement(models.Model):
+    football_player_achievements = models.ForeignKey(FootballPlayer, on_delete=models.CASCADE)
+    tournament = models.CharField(max_length=100)
+    achievement = models.CharField(max_length=250)

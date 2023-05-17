@@ -1,0 +1,13 @@
+{% extends "./info_football_player.html" %}
+
+{% block title %}
+    <h2>Selected Player - {{ players }}</h2>
+{% endblock title %}
+
+{% block main_part %}
+    <ul>
+        {% for achievement in players.achievement_set.all %}
+            <li><a href="achievement/{{ achievement.id}}">{{ achievement.tournament }}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock main_part %}

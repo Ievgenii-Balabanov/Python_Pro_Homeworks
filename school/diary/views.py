@@ -1,7 +1,11 @@
 from django.http import HttpResponse
 import random
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render, get_object_or_404
+from django.template import loader
+
 from .models import FootballPlayer
+from .models import Achievement
+from django.template.loader import render_to_string
 
 index_template = f"""
     <form action="/login/" method="POST">
@@ -104,7 +108,7 @@ def login(request):
         name = request.POST.get("name")
         position = request.POST.get("position")
         club = request.POST.get("contact")
-        achievements = request.POST.get("achievements")
+        # achievements = request.POST.get("achievements")
         user_input = False
         try:
             transfer_fee = int(request.POST.get('fee'))
@@ -113,10 +117,9 @@ def login(request):
             transfer_fee = random.randrange(1, 100)
         response = f"Player Name: {name}, Position: {position}, Club: {club}, " \
                    f"Transfer fee {'(added by user): ' if user_input else '(random integer): '}" \
-                   f"{transfer_fee} millions euros, Achievements: {achievements}"
+                   f"{transfer_fee} millions euros"
 
-        diary_football_player = FootballPlayer(name=name, position=position, club=club, transfer_fee=transfer_fee,
-                                               achievements=achievements)
+        diary_football_player = FootballPlayer(name=name, position=position, club=club, transfer_fee=transfer_fee)
         diary_football_player.save()
     else:
         response = "Please create a player"
@@ -143,7 +146,7 @@ def is_exist_check(request):
     функция проверяет существует ли инстанс с указанным pk и если нет - редирект на страницу формы
     """
     try:
-        football_player = FootballPlayer.objects.get(pk=1)
+        football_player = FootballPlayer.objects.get(pk=4)
         return HttpResponse(football_player)
     except Exception:
         return redirect(index)
@@ -151,7 +154,7 @@ def is_exist_check(request):
 
 def param_update(request):
     if request.POST:
-        football_player = FootballPlayer.objects.get(pk=1)
+        football_player = FootballPlayer.objects.get(pk=3)
         football_player.name = request.POST.get("name")
         football_player.position = request.POST.get("position")
         football_player.club = request.POST.get("contact")
@@ -162,6 +165,26 @@ def param_update(request):
 
 
 def football_player(request):
+    template = loader.get_template("diary/info_football_player.html")
+    context = {
+        "players": FootballPlayer.objects.all()
+    }
+    return HttpResponse(template.render(context, request))
 
-    player = FootballPlayer.objects.all()
-    return HttpResponse(player)
+
+def footballer(request, football_player_id):
+    player = get_object_or_404(FootballPlayer, pk=football_player_id)
+    return render(request, "diary/player.html", {"players": player})
+
+
+def achievements(request):
+    ach_template = loader.get_template("diary/achievements_detail.html")
+    context_achiev = {
+        "achiev": Achievement.objects.all()
+    }
+    return HttpResponse(ach_template.render(context_achiev, request))
+
+
+def achievements_detail(request, football_player_achievements_id):
+    reaching = get_object_or_404(Achievement, pk=football_player_achievements_id)
+    return render(request, "diary/achievements_detail.html", {"football_player_achievements": reaching})

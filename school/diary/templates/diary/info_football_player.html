@@ -1,0 +1,14 @@
+{% extends "./base.html" %}
+
+{% block main_part %}
+    {% if players %}
+        <ul>
+        {%  for person in players %}
+            <li><a href="/football_player/{{ person.id }}">{{ person.name }}</a></li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
+
+{% block player_detail %}{% endblock player_detail %}
+{% endblock main_part %}
