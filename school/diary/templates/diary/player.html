@@ -1,0 +1,16 @@
+{% extends "./base.html" %}
+
+{% block title %}
+    Selected Player
+{% endblock title %}
+
+{% block content %}
+    <h1>Selected Player - {{ players }}</h1>
+    <h3>Achievements and Titles:</h3>
+    <ul>
+        {% for achievement in players.achievement_set.all %}
+            <li><strong><a href="/achievement/{{ achievement.id}}">{{ achievement.tournament }}</strong></a></li>
+        {% endfor %}
+    </ul>
+
+{% endblock content %}
