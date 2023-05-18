@@ -186,5 +186,5 @@ def achievements(request):
 
 
 def achievements_detail(request, achievement_id):
-    reaching = Achievement.objects.get(pk=achievement_id)
+    reaching = get_object_or_404(Achievement, pk=achievement_id)
     return render(request, "diary/achievements_detail.html", {"achievement_key": reaching})
