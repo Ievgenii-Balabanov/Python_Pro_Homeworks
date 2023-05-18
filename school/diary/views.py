@@ -177,18 +177,17 @@ def footballer(request, football_player_id):
     return render(request, "diary/player.html", {"players": player})
 
 
+
+
+
 def achievements(request):
     ach_template = loader.get_template("diary/achievements_detail.html")
-    context_achievemnts = {
-        "achiev": Achievement.objects.all()
+    context_achievement = {
+        "achievement_key": Achievement.objects.all()
     }
-    return HttpResponse(ach_template.render(context_achievemnts, request))
+    return HttpResponse(ach_template.render(context_achievement, request))
 
 
-def achievements_detail(request, achievements_id):
-    reaching = Achievement.objects.get(pk=achievements_id)
-    return render(request, "diary/achievements_detail.html", {"achievement": reaching})
-
-# def achievements_detail(request, achievements_id):
-#     reaching = Achievement.objects.get(pk=achievements_id)
-#     return render(request, "diary/achievements_detail.html", {"Achievement": reaching})
+def achievements_detail(request, achievement_id):
+    reaching = Achievement.objects.get(pk=achievement_id)
+    return render(request, "diary/achievements_detail.html", {"achievement_key": reaching})

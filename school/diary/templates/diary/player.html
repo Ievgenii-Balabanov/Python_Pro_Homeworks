@@ -8,6 +8,7 @@
     <ul>
         {% for achievement in players.achievement_set.all %}
             <li><a href="/achievement/{{ achievement.id}}">{{ achievement.tournament }}</a></li>
+            <li>{{ achievement.tournament }}: {{ achievement.achievement }}</li>
         {% endfor %}
     </ul>
 
