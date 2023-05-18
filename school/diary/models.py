@@ -12,7 +12,7 @@ class FootballPlayer(models.Model):
 
     def __str__(self):
         return f"Name: {self.name}, Position: {self.position}, Club: {self.club}, " \
-               f"Market value: {self.transfer_fee}"
+               f"Market value: {self.transfer_fee} million(s) euros"
 
 
 def validate_isalpha(form_input):

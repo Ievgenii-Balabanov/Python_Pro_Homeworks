@@ -1,6 +1,12 @@
-
+{% extends "./base.html" %}
 
 {% block title %}
-    <h2>Selected Achievement - {{ achievement_key }}</h2>
+    Achievements
 {% endblock title %}
 
+{% block content %}
+    <h1>Player Achievements:</h1>
+    <ul>
+        <li>{{ achievement_key.achievement }}</li>
+    </ul>
+{% endblock content %}

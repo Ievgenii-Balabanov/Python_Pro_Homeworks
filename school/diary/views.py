@@ -177,9 +177,6 @@ def footballer(request, football_player_id):
     return render(request, "diary/player.html", {"players": player})
 
 
-
-
-
 def achievements(request):
     ach_template = loader.get_template("diary/achievements_detail.html")
     context_achievement = {
