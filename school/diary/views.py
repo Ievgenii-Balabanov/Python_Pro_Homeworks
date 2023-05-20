@@ -3,6 +3,7 @@ import random
 from django.shortcuts import redirect, render, get_object_or_404
 from django.template import loader
 
+from .forms import AchievementForm
 from .models import FootballPlayer
 from .models import Achievement
 from django.template.loader import render_to_string
@@ -188,3 +189,13 @@ def achievements(request):
 def achievements_detail(request, achievement_id):
     reaching = get_object_or_404(Achievement, pk=achievement_id)
     return render(request, "diary/achievements_detail.html", {"achievement_key": reaching})
+
+
+def add_achievement(request, football_player_id):
+    player = get_object_or_404(FootballPlayer, pk=football_player_id)
+    form_data = AchievementForm(request.POST)
+    if form_data.is_valid():
+        Achievement.objects.create(football_player_achievements=player, tournament=form_data.cleaned_data['tournament'],
+                                   achievement=request.POST.get('achievement'))
+    print("Error")
+    return render(request, "diary/player.html", {"players": player, "error_message": form_data.errors})

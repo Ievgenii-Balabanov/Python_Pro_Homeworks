@@ -9,8 +9,31 @@
     <h3>Achievements and Titles:</h3>
     <ul>
         {% for achievement in players.achievement_set.all %}
-            <li><strong><a href="/achievement/{{ achievement.id}}">{{ achievement.tournament }}</strong></a></li>
+            <li><strong><a href="/achievement/{{ achievement.id}}">{{ achievement.tournament }}</a></strong></li>
         {% endfor %}
     </ul>
+
+    <form action="{% url 'new_achievement' players.id %}" method="post">
+        {% csrf_token %}
+        <fieldset>
+            <legend><h3>New Achievement for the {{ players.name }}</h3></legend>
+            {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+            <input type="text" name="tournament" id="tournament_name" value="{{ "Tournament" }}">
+            <label for="achievement_title">Please enter the Tournament title</label>
+            <p>
+            <input type="text" name="achievement" id="achievement_name" value="{{ "Achievement" }}">
+            <label for="achievement_name">Please specify the player's New Achievement</label><br>
+            <p>
+{#            <input type="text" name="achievement" id="achievement_name" value="{{ "Achievement" }}">#}
+{#            <label for="achievement_name">Please specify the player's new achievement</label><br>#}
+{#            <p>#}
+{#            <input type="text" name="achievement" id="achievement_name" value="{{ "Achievement" }}">#}
+{#            <label for="achievement_name">Please specify the player's new achievement</label><br>#}
+{#            <p>#}
+{#            <input type="text" name="achievement" id="achievement_name" value="{{ "Achievement" }}">#}
+{#            <label for="achievement_name">Please specify the player's new achievement</label><br>#}
+        </fieldset>
+        <input type="submit" value="Save achievement">
+    </form>
 
 {% endblock content %}

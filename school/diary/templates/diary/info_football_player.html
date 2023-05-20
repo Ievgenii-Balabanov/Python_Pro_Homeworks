@@ -6,7 +6,8 @@
     {% if players %}
         <ul>
         {%  for person in players %}
-            <li><strong><a href="/football_player/{{ person.id }}">{{ person.name }}</a></strong></li>
+{#            <li><strong><a href="/football_player/{{ person.id }}">{{ person.name }}</a></strong></li>#}
+            <li><strong><a href="{% url "player" person.id %}">{{ person.name }}</a></strong></li>
         {% endfor %}
         </ul>
     {% endif %}
