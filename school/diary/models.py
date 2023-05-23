@@ -57,7 +57,7 @@ class Achievement(models.Model):
     football_player_achievements = models.ForeignKey(FootballPlayer, on_delete=models.CASCADE)
     tournament = models.CharField(max_length=100)
     achievement = models.CharField(max_length=250)
-    appearances = models.IntegerField(default=0)
     scored_goals = models.IntegerField(default=0)
-    clean_sheets = models.IntegerField(default=0)
+    appearances = models.IntegerField(default=0)
+    clean_sheets = models.IntegerField(null=True)
 

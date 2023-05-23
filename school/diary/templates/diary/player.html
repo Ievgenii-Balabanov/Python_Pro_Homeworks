@@ -18,20 +18,20 @@
         <fieldset>
             <legend><h3>New Achievement for the {{ players.name }}</h3></legend>
             {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-            <input type="text" name="tournament" id="tournament_name" value="{{ "Tournament" }}">
-            <label for="achievement_title">Please enter the Tournament title</label>
+            <input type="text" name="tournament" id="tournament_name" value="{{ "" }}">
+            <label for="achievement_title">Please enter the Tournament name</label>
             <p>
-            <input type="text" name="achievement" id="achievement_name" value="{{ "Achievement" }}">
+            <input type="text" name="achievement" id="achievement_name" value="{{ "" }}">
             <label for="achievement_name">Please specify the player's New Achievement</label><br>
             <p>
-{#            <input type="text" name="achievement" id="achievement_name" value="{{ "Achievement" }}">#}
-{#            <label for="achievement_name">Please specify the player's new achievement</label><br>#}
-{#            <p>#}
-{#            <input type="text" name="achievement" id="achievement_name" value="{{ "Achievement" }}">#}
-{#            <label for="achievement_name">Please specify the player's new achievement</label><br>#}
-{#            <p>#}
-{#            <input type="text" name="achievement" id="achievement_name" value="{{ "Achievement" }}">#}
-{#            <label for="achievement_name">Please specify the player's new achievement</label><br>#}
+            <input type="text" name="scored_goals" id="scored_goals" value="{{ "" }}">
+            <label for="scored_goals">Please specify the number of scored goals</label><br>
+            <p>
+            <input type="text" name="appearances" id="appearances" value="{{ "" }}">
+            <label for="appearances">Please specify the number of appearances in the season</label><br>
+            <p>
+            <input type="text" name="clean_sheets" id="clean_sheets" value="{{ "" }}">
+            <label for="clean_sheets">Please specify the goalkeeper's "clean sheets"</label><br>
         </fieldset>
         <input type="submit" value="Save achievement">
     </form>

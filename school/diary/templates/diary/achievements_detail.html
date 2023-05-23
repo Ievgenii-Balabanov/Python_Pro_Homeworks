@@ -4,9 +4,13 @@
     Achievements
 {% endblock title %}
 
+{% csrf_token %}
 {% block content %}
-    <h1>Player Achievements:</h1>
+    <h1>Player Achievement: {{ achievement_key.achievement }}</h1>
+    <h3>Competition Stats:</h3>
     <ul>
-        <li>{{ achievement_key.achievement }}</li>
+        <li>Appearances in the season: {{ achievement_key.appearances }}</li>
+        <li>Scored Goals in the tournament: {{ achievement_key.scored_goals }}</li>
+        <li>Clean Sheets: {{ achievement_key.clean_sheets }}</li>
     </ul>
 {% endblock content %}
