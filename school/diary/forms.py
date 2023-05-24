@@ -1,7 +1,8 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from .models import FootballPlayer
+# from .models import FootballPlayer
+from .views import *
 
 
 class AchievementForm(forms.Form):
@@ -37,15 +38,11 @@ class AchievementForm(forms.Form):
         return scored_goals_data
 
     def clean_clean_sheets(self):
-        player = FootballPlayer.objects.filter(position="GK")
-        clean_sheets_data = self.cleaned_data['clean_sheets']
-        print(player)
-
-        if player == "GK":
-
+        if not player:
             raise ValidationError("Incorrect position is specified. "
                                   "\"Clean sheets\" field is allowed only for the \"GK\" position")
-        return clean_sheets_data
+        football_player = FootballPlayer.objects.get(pk=player)
+        return football_player
 
     def clean(self):
         cleaned_data = super().clean()

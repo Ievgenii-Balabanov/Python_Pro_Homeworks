@@ -145,8 +145,10 @@ def login(request):
         some_player = FootballPlayer.objects.create(name=name, position=position, club=club, transfer_fee=transfer_fee)
         global player
         player = some_player.id
+        print(player)
     else:
         response = "Please create a player"
+
     return HttpResponse(response)
 
 
@@ -180,7 +182,7 @@ def is_exist_check(request):
     функция проверяет существует ли инстанс с указанным pk и если нет - редирект на страницу формы
     """
     try:
-        some_player = FootballPlayer.objects.get(pk=pk)
+        some_player = FootballPlayer.objects.get(pk=player)
         return HttpResponse(some_player)
     except Exception:
         return redirect(index)
@@ -188,7 +190,7 @@ def is_exist_check(request):
 
 def param_update(request):
     if request.POST:
-        football_player = FootballPlayer.objects.get(pk=3)
+        football_player = FootballPlayer.objects.get(pk=player)
         football_player.name = request.POST.get("name")
         football_player.position = request.POST.get("position")
         football_player.club = request.POST.get("contact")
@@ -225,6 +227,7 @@ def achievements_detail(request, achievement_id):
 
 
 def add_achievement(request, football_player_id):
+    global player
     player = get_object_or_404(FootballPlayer, pk=football_player_id)
     form_data = AchievementForm(request.POST)
     if form_data.is_valid():
