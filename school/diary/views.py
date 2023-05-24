@@ -168,13 +168,13 @@ def login(request):
         some_player = FootballPlayer.objects.create(name=name, position=position, club=club, transfer_fee=transfer_fee)
         global player
         player = some_player.id
-        print(player)
+        # print(player)
     else:
         response = "Please create a player"
 
     return HttpResponse(response)
 
-
+#
 def add_achievements(request):
     """
         вносим достижения инстанса
@@ -251,16 +251,32 @@ def achievements_detail(request, achievement_id):
     return render(request, "diary/achievements_detail.html", {"achievement_key": reaching})
 
 
+# def add_achievement(request, football_player_id):
+#     # global player
+#     new_player = get_object_or_404(FootballPlayer, pk=football_player_id)
+#     form_data = AchievementForm(request.POST)
+#     if form_data.is_valid():
+#         Achievement.objects.create(football_player_achievements=new_player,
+#                                    tournament=form_data.cleaned_data['tournament'],
+#                                    achievement=form_data.cleaned_data['achievement'],
+#                                    scored_goals=form_data.cleaned_data['scored_goals'],
+#                                    appearances=form_data.cleaned_data['appearances'],
+#                                    clean_sheets=form_data.cleaned_data['clean_sheets'],)
+#
+#     return render(request, "diary/player.html", {"players": new_player, "error_message": form_data.errors})
 def add_achievement(request, football_player_id):
-    global player
-    player = get_object_or_404(FootballPlayer, pk=football_player_id)
+    if request.POST:
+        if not player:
+            return redirect(login)
+        new_player = get_object_or_404(FootballPlayer, pk=football_player_id)
     form_data = AchievementForm(request.POST)
     if form_data.is_valid():
-        Achievement.objects.create(football_player_achievements=player,
+        Achievement.objects.create(football_player_achievements=new_player,
                                    tournament=form_data.cleaned_data['tournament'],
                                    achievement=form_data.cleaned_data['achievement'],
                                    scored_goals=form_data.cleaned_data['scored_goals'],
                                    appearances=form_data.cleaned_data['appearances'],
                                    clean_sheets=form_data.cleaned_data['clean_sheets'],)
 
-    return render(request, "diary/player.html", {"players": player, "error_message": form_data.errors})
+    return render(request, "diary/player.html", {"players": new_player, "error_message": form_data.errors})
+print(player)
