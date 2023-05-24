@@ -127,6 +127,29 @@ def index(request):
 #         response = "Please create a player"
 #     return HttpResponse(response)
 
+# def login(request):
+#     if request.POST:
+#         name = request.POST.get("name")
+#         position = request.POST.get("position")
+#         club = request.POST.get("contact")
+#         user_input = False
+#         try:
+#             transfer_fee = int(request.POST.get('fee'))
+#             user_input = True
+#         except ValueError:
+#             transfer_fee = random.randrange(1, 100)
+#         response = f"Player Name: {name}, Position: {position}, Club: {club}, " \
+#                    f"Transfer fee {'(added by user): ' if user_input else '(random integer): '}" \
+#                    f"{transfer_fee} millions euros"
+#
+#         some_player = FootballPlayer.objects.create(name=name, position=position, club=club, transfer_fee=transfer_fee)
+#         global player
+#         player = some_player.id
+#         print(player)
+#     else:
+#         response = "Please create a player"
+#
+#     return HttpResponse(response)
 def login(request):
     if request.POST:
         name = request.POST.get("name")
@@ -191,7 +214,7 @@ def is_exist_check(request):
 def param_update(request):
     if request.POST:
         football_player = FootballPlayer.objects.get(pk=player)
-        football_player.name = request.POST.get("name")
+        # football_player.name = request.POST.get("name")
         football_player.position = request.POST.get("position")
         football_player.club = request.POST.get("contact")
         football_player.transfer_fee = int(request.POST.get('fee'))
