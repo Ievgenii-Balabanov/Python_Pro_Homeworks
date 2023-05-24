@@ -181,6 +181,8 @@ def add_achievements(request):
         :return:
         """
     if request.POST:
+        if not player:
+            return redirect("login")
         achievements = request.POST.get("achievements")
         response = f"Player club: {achievements}"
         diary_football_player = FootballPlayer(achievements=achievements)

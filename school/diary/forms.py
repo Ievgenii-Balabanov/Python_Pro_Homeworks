@@ -38,17 +38,13 @@ class AchievementForm(forms.Form):
         return scored_goals_data
 
     def clean_clean_sheets(self):
+        clean_sheets_data = self.cleaned_data['clean_sheets']
         from .views import player
-        if player:
-            football_player = FootballPlayer.objects.get(pk=player)
-            if football_player.position == "GK":
-                return football_player
-        else:
-            raise ValidationError("Incorrect position is specified. "
-                                  "\"Clean sheets\" field is allowed only for the \"GK\" position")
-
-
-
+        football_player = FootballPlayer.objects.get(pk=player)
+        if football_player.position != "GK":
+            return ValidationError("Incorrect position is specified. "
+                                   "\"Clean sheets\" field is allowed only for the \"GK\" position")
+        return clean_sheets_data
 
     def clean(self):
         cleaned_data = super().clean()
