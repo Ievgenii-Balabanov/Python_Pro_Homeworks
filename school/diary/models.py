@@ -1,6 +1,11 @@
 from django.db import models
 
 
+class User(models.Model):
+    login = models.CharField(max_length=25)
+    password = models.CharField(max_length=25)
+
+
 class FootballPlayer(models.Model):
     """
     класс FootballPlayer хранящий параметры для создания инстанса
@@ -21,7 +26,7 @@ def validate_isalpha(form_input):
     :param form_input:
     :return:
     """
-    if form_input.isalpha() and 1 < len(form_input) < 21:
+    if form_input.isalpha() and 0 < len(form_input) < 21:
         return form_input
     return Exception("Data isn't alpha or out of range")
 

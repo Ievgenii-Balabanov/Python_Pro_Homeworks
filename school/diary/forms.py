@@ -12,6 +12,10 @@ class AchievementForm(forms.Form):
     appearances = forms.IntegerField(min_value=1)
     clean_sheets = forms.IntegerField(required=False)
 
+    def __init__(self, *args, **kwargs):
+        self._football_player_id = kwargs.pop("football_player_id")
+        super().__init__(*args, **kwargs)
+
     def clean_tournament(self):
         tournament_data = self.cleaned_data['tournament']
         if len(tournament_data.split(' ')) < 2 and tournament_data.capitalize():
@@ -39,11 +43,10 @@ class AchievementForm(forms.Form):
 
     def clean_clean_sheets(self):
         clean_sheets_data = self.cleaned_data['clean_sheets']
-        from .views import player
-        football_player = FootballPlayer.objects.get(pk=player)
-        if football_player.position != "GK":
-            return ValidationError("Incorrect position is specified. "
-                                   "\"Clean sheets\" field is allowed only for the \"GK\" position")
+        football_player = FootballPlayer.objects.get(pk=self._football_player_id)
+        if football_player.position != "GK" and clean_sheets_data > 0:
+            raise ValidationError("Incorrect position is specified. \"Clean sheets\" field is allowed only for"
+                                          " the \"GK\" position")
         return clean_sheets_data
 
     def clean(self):
