@@ -1,0 +1,40 @@
+{% extends "./base.html" %}
+{% block title %}Parameters updating{% endblock title %}
+
+{% block content %}
+    <h1>Player parameters updating</h1>
+    <form action="{% url 'param_update' %}" method="post">
+        {% csrf_token %}
+        <fieldset>
+            <legend><h3>Please update the selected player's parameters</h3></legend>
+            {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+            <input type="text" name="name" id="player_name" value="{{ "" }}">
+            <label for="player_name">Please enter the New Player's name</label>
+            <p>
+            <input type="text" name="position" id="position_value" value="{{ "" }}">
+            <label for="position_value">Please specify the position of the player (e.g. GK, CB, CMF, ST, LW, CAM)</label>
+            <p>
+            <legend>Please select the New Player's football club:</legend>
+            <div>
+                <input type="radio" id="contactChoice1" name="contact" value="PSG"  />
+                <label for="contactChoice1">PSG</label>
+                <input type="radio" id="contactChoice2" name="contact" value="Parma" />
+                <label for="contactChoice2">Parma</label>
+                <input type="radio" id="contactChoice3" name="contact" value="Juventus" />
+                <label for="contactChoice3">Juventus</label>
+                <input type="radio" id="contactChoice3" name="contact" value="Milan" />
+                <label for="contactChoice4">Milan</label>
+                <input type="radio" id="contactChoice3" name="contact" value="Barcelona" />
+                <label for="contactChoice5">Barcelona</label>
+                <input type="radio" id="contactChoice3" name="contact" value="Real Madrid" />
+                <label for="contactChoice6">Real Madrid</label>
+            </div>
+        </fieldset>
+        <p>
+        <label for="new_item">Please specify Market value otherwise computer will do it for you</label>
+        <input name="fee" id="new_item" value="" />
+        <p>
+        <input type="submit" value="Save achievement">
+    </form>
+
+{% endblock content %}

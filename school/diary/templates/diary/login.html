@@ -1,0 +1,21 @@
+{% extends "./base.html" %}
+{% block title %}Login{% endblock title %}
+
+{% block content %}
+    <h1>User login</h1>
+    <form action="{% url 'login' %}" method="post">
+        {% csrf_token %}
+        <fieldset>
+            <legend><h3>Please login the system using valid credentials</h3></legend>
+            {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+            <input type="text" name="login" id="login_value" value="{{ "" }}">
+            <label for="login_value">Please enter your login</label>
+            <p>
+            <input type="text" name="password" id="password_value" value="{{ "" }}">
+            <label for="password_value">Please your password</label><br>
+        </fieldset>
+    <p>
+    <input type="submit" value="Save achievement">
+    </form>
+
+{% endblock content %}

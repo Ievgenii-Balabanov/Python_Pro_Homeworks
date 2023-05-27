@@ -5,8 +5,24 @@
     <title>{% block title %}{% endblock title %}</title>
 </head>
 <body>
+{% csrf_token %}
 
-{% block content %}{% endblock content %}
+{% block content %}
 
+    {% url 'player_registration' %}
+{% endblock content %}
+<a href="{% url "index" %}">Return to the "Player registration" page</a>
+<p>
+<a href="{% url "football_player" %}">Return to the "add Achievements" page</a>
+<p>
+<a href="{% url "is_exist_check" %}">Return to the "is_exist_check" page</a>
+<p>
+<a href="{% url "param_update" %}">Return to the "Player parameters updating" page</a>
+<p>
+{#<a href="{% url "login" %}">Return to the "Login" page</a>#}
+{#<p>#}
+{#<a href="{% url "player_registration" %}">Return to the "Player registration" page</a>#}
+{#<p>#}
+{#<a href="{% url "player_registration" %}">Return to the "Achievements addition" page</a>#}
 </body>
 </html>
