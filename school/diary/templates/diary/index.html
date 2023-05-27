@@ -8,12 +8,12 @@
     <form method="POST">
         <fieldset>
             {% csrf_token %}
-            {% if error_message %}<p>{{ error_message }}</p>{% endif %}<p>
+{#            {% if error_message %}<p>{{ error_message }}</p>{% endif %}<p>#}
             {{ form.name }} Enter a new player Name with at least 2 characters<p>
             {{ form.position }} Specify a new player Position using only upper case symbols(e.g. GK, CB, CMF, ST, LW, CAM)<p>
             {{ form.club }} Specify a new player Club using only alphabets<p>
             {{ form.transfer_fee }} Specify a new player Market value in range 1-150 millions euros<p>
-{#            <span><strong>{{ error }}</strong></span><p>#}
+            <span><strong>{{ error }}</strong></span><p>
             <span><strong>{% if error_message %}<p>{{ error_message }}</p>{% endif %}</strong></span><p>
             <button class="btn btn_success" type="submit">Save</button><p>
         </fieldset>

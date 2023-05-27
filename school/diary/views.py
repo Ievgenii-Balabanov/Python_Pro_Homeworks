@@ -12,11 +12,8 @@ from django.template.loader import render_to_string
 player = None
 
 
-# def index(request):
-#     return render(request, 'diary/index.html')
-
 def index(request):
-    # error = ""
+    error = ""
     if request.POST:
         form_data = FootballPlayerForm(request.POST)
         if form_data.is_valid():
@@ -27,14 +24,14 @@ def index(request):
             global player
             player = some_new_player.id
             print(player)
-        # else:
-        #     error = "Please enter valid data!"
+        else:
+            error = "Please enter valid data!"
 
     form_data = FootballPlayerForm
 
     data = {
         'form': form_data,
-        # 'error': error
+        'error': error
     }
 
     return render(request, 'diary/index.html', data)
