@@ -1,97 +1,45 @@
+from django.core.exceptions import ValidationError
 from django.http import HttpResponse
 import random
 from django.shortcuts import redirect, render, get_object_or_404
 from django.template import loader
 
-from .forms import AchievementForm
-from .models import FootballPlayer, User
+from .forms import AchievementForm, FootballPlayerForm
+from .models import FootballPlayer
 from .models import Achievement
 from django.template.loader import render_to_string
 
 player = None
 
 
-def index(request):
-    return render(request, "diary/index.html")
 # def index(request):
-#     return render(request, "diary/login.html")
+#     return render(request, 'diary/index.html')
 
-
-# def add_user(request):
-#     if request.POST:
-#         login = request.POST.get("login")
-#         password = request.POST.get("password")
-#         response = f"Player Name: {login}, Position: {password}
-
-# ----------------------------------------------------------------
-
-
-def login(request):
+def index(request):
+    # error = ""
     if request.POST:
-        name = request.POST.get("name")
-        position = request.POST.get("position")
-        club = request.POST.get("contact")
-        user_input = False
-        try:
-            transfer_fee = int(request.POST.get('fee'))
-            user_input = True
-        except ValueError:
-            transfer_fee = random.randrange(1, 100)
-        response = f"Player Name: {name}, Position: {position}, Club: {club}, " \
-                   f"Transfer fee {'(added by user): ' if user_input else '(random integer): '}" \
-                   f"{transfer_fee} millions euros"
+        form_data = FootballPlayerForm(request.POST)
+        if form_data.is_valid():
+            some_new_player = FootballPlayer.objects.create(name=form_data.cleaned_data['name'],
+                                                            position=form_data.cleaned_data['position'],
+                                                            club=form_data.cleaned_data['club'],
+                                                            transfer_fee=form_data.cleaned_data['transfer_fee'],)
+            global player
+            player = some_new_player.id
+            print(player)
+        # else:
+        #     error = "Please enter valid data!"
 
-        some_player = FootballPlayer.objects.create(name=name, position=position, club=club, transfer_fee=transfer_fee)
-        global player
-        player = some_player.id
-        print(player)
-    else:
-        response = "Please create a player"
+    form_data = FootballPlayerForm
 
-    return HttpResponse(response)
+    data = {
+        'form': form_data,
+        # 'error': error
+    }
 
-
-# ----------------------------------------------------------------
+    return render(request, 'diary/index.html', data)
 
 
-# def login(request):
-#     global player
-#     if request.POST:
-#         login = request.POST.get("login")
-#         password = request.POST.get("password")
-#         response = f"Player Name: {login}, Position: {password}"
-#         new_user = User.objects.create(login=login, password=password)
-#         player = new_user.id
-#     else:
-#         response = "To get started, log in to the system!"
-#     return HttpResponse(response)
-#
-#
-# def player_registration(request):
-#     if request.POST:
-#         name = request.POST.get("name")
-#         position = request.POST.get("position")
-#         club = request.POST.get("contact")
-#         user_input = False
-#         try:
-#             transfer_fee = request.POST.get('fee')
-#             user_input = True
-#         except ValueError:
-#             transfer_fee = random.randrange(1, 100)
-#         response = f"Player Name: {name}, Position: {position}, Club: {club}, " \
-#                    f"Transfer fee {'(added by user): ' if user_input else '(random integer): '}" \
-#                    f"{transfer_fee} millions euros"
-#
-#         some_player = FootballPlayer.objects.create(name=name, position=position, club=club, transfer_fee=transfer_fee)
-#         global player
-#         player = some_player.id
-#         # print(player)
-#     else:
-#         response = "Please create a player"
-#
-#     return HttpResponse(response)
-
-#
 def add_achievements(request):
     """
         вносим достижения инстанса
@@ -162,7 +110,7 @@ def achievements_detail(request, achievement_id):
 def add_achievement(request, football_player_id):
     if request.POST:
         if not player:
-            return redirect(login)
+            return redirect(index)
     new_player = get_object_or_404(FootballPlayer, pk=football_player_id)
     form_data = AchievementForm(request.POST, football_player_id=football_player_id)
     if form_data.is_valid():
