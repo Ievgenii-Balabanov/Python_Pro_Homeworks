@@ -119,4 +119,6 @@ def add_achievement(request, football_player_id):
                                    clean_sheets=form_data.cleaned_data['clean_sheets'],)
 
     return render(request, "diary/player.html", {"players": new_player, "error_message": form_data.errors})
+
+
 print(player)
