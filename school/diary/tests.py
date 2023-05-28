@@ -1,4 +1,3 @@
-from django.test import TestCase
 import pytest
 from django.urls import reverse
 from pytest_django.asserts import assertQuerysetEqual
@@ -40,21 +39,28 @@ def test_is_exist_redirects_to_root(client):
 #     """
 #     response_clean_database = client.get('/football_player/')
 #     football_players = FootballPlayer.objects.all()
-#     assertQuerysetEqual(response_clean_database.context["players"], football_players)
+#     assertQuerysetEqual(response_clean_database.context["players"],
+#                         football_players)
 #     new_db_player_name = "Gattuso"
 #     new_db_player_position = "CMF",
 #     new_db_player_club = "Valencia",
 #     new_db_player_transfer_fee = 12
-#     FootballPlayer.objects.create(name=new_db_player_name, position=new_db_player_position, club=new_db_player_club,
+#     FootballPlayer.objects.create(name=new_db_player_name,
+#                                   position=new_db_player_position,
+#                                   club=new_db_player_club,
 #                                   transfer_fee=new_db_player_transfer_fee)
 #     football_players_updated = FootballPlayer.objects.all()
 #     response_fulfilled_database = client.get('/football_player/')
-#     assertQuerysetEqual(response_fulfilled_database.context['players'], football_players_updated, ordered=False)
+#     assertQuerysetEqual(response_fulfilled_database.context['players'],
+#                         football_players_updated, ordered=False)
 #     assert len(response_fulfilled_database.context['players']) == 1
 
 # --------------------------------------------------------------------------------
+
+
 @pytest.mark.django_db
-def test_new_player_add_and_achievements(client, football_player_achievements_id=None):
+def test_new_player_add_and_achievements(client,
+                                         football_player_achievements_id=None):
     """
     Test failed attempt to add one player and achievements to it
     :param client:
@@ -63,12 +69,15 @@ def test_new_player_add_and_achievements(client, football_player_achievements_id
     """
     response_clean_database = client.get('/football_player/')
     football_players = FootballPlayer.objects.all()
-    assertQuerysetEqual(response_clean_database.context["players"], football_players)
+    assertQuerysetEqual(response_clean_database.context["players"],
+                        football_players)
     new_db_player_name = "Gattuso"
     new_db_player_position = "CMF",
     new_db_player_club = "Valencia",
     new_db_player_transfer_fee = 12
-    FootballPlayer.objects.create(name=new_db_player_name, position=new_db_player_position, club=new_db_player_club,
+    FootballPlayer.objects.create(name=new_db_player_name,
+                                  position=new_db_player_position,
+                                  club=new_db_player_club,
                                   transfer_fee=new_db_player_transfer_fee)
 
     new_tournament = "Seria A"
@@ -76,16 +85,19 @@ def test_new_player_add_and_achievements(client, football_player_achievements_id
     new_scored_goals = 4
     new_appearances = 378
     new_clean_sheets = 0
-    Achievement.objects.create(football_player_achievements_id=1, tournament=new_tournament,
-                               achievement=new_achievement, scored_goals=new_scored_goals,
-                               appearances=new_appearances, clean_sheets=new_clean_sheets)
+    Achievement.objects.create(football_player_achievements_id=1,
+                               tournament=new_tournament,
+                               achievement=new_achievement,
+                               scored_goals=new_scored_goals,
+                               appearances=new_appearances,
+                               clean_sheets=new_clean_sheets)
     football_players_updated = FootballPlayer.objects.all()
-    achievements_updated = Achievement.objects.all()
+    # achievements_updated = Achievement.objects.all()
     response_fulfilled_database = client.get('/football_player/')
-    new_response_fulfilled_database = client.get('/football_player/1/')
-    assertQuerysetEqual(response_fulfilled_database.context['players'], football_players_updated, ordered=False)
+    # new_response_fulfilled_database = client.get('/football_player/1/')
+    assertQuerysetEqual(response_fulfilled_database.context['players'],
+                        football_players_updated, ordered=False)
     assert len(response_fulfilled_database.context['players']) == 1
-
 
 
 # @pytest.mark.django_db
@@ -98,9 +110,11 @@ def test_new_player_add_and_achievements(client, football_player_achievements_id
 #     new_scored_goals = 4
 #     new_appearances = 378
 #     new_clean_sheets = 0
-#     Achievement.objects.create(tournament=new_tournament, achievement=new_achievement, scored_goals=new_scored_goals,
-#                                appearances=new_appearances, clean_sheets=new_clean_sheets)
+    Achievement.objects.create(tournament=new_tournament,
+                               achievement=new_achievement,
+                               scored_goals=new_scored_goals,
+                               appearances=new_appearances,
+                               clean_sheets=new_clean_sheets)
 #     players_updated = Achievement.objects.all()
 #     response_updated = client.get('football_player/1/add_achievement/')
 #     assertQuerysetEqual(response_updated, players_updated)
-

@@ -3,7 +3,6 @@ from django.core.exceptions import ValidationError
 from django.forms import ModelForm, TextInput
 
 from .models import FootballPlayer
-from .views import *
 
 
 class FootballPlayerForm(ModelForm):
@@ -49,13 +48,13 @@ class FootballPlayerForm(ModelForm):
     def clean_club(self):
         club_data = self.cleaned_data['club']
         if club_data.islower():
-            raise ValidationError("Data is out of range or use lower case only")
+            raise ValidationError("Data is out of range or lower case only")
         return club_data
 
     def clean_transfer_fee(self):
         transfer_fee_data = self.cleaned_data['transfer_fee']
         if transfer_fee_data not in range(1, 151):
-            raise ValidationError("Data is out of range or use lower case only")
+            raise ValidationError("Data is out of range or lower case only")
         return transfer_fee_data
 
     def clean(self):
@@ -81,34 +80,40 @@ class AchievementForm(forms.Form):
     def clean_tournament(self):
         tournament_data = self.cleaned_data['tournament']
         if len(tournament_data.split(' ')) < 2:
-            raise ValidationError("Please specify a Tournament name that consists of at least 2 words!")
+            raise ValidationError("Please specify a Tournament name "
+                                  "that consists of at least 2 words!")
         return tournament_data
 
     def clean_achievement(self):
         achievement_data = self.cleaned_data['achievement']
         if len(achievement_data.split(' ')) < 2:
-            raise ValidationError("Please specify achievement that consists of at least 2 words!")
+            raise ValidationError("Please specify achievement "
+                                  "that consists of at least 2 words!")
         return achievement_data
 
     def clean_appearances(self):
         appearances_data = self.cleaned_data['appearances']
         if appearances_data < 5:
-            raise ValidationError("Minimum allowable quantity of the appearances in the season "
+            raise ValidationError("Minimum allowable quantity "
+                                  "of the appearances in the season "
                                   "must be more then 5")
         return appearances_data
 
     def clean_scored_goals(self):
         scored_goals_data = self.cleaned_data['scored_goals']
         if scored_goals_data < 0:
-            raise ValidationError("Allowed number of scored goals must be zero or more")
+            raise ValidationError("Allowed number of scored goals "
+                                  "must be zero or more")
         return scored_goals_data
 
     def clean_clean_sheets(self):
         clean_sheets_data = self.cleaned_data['clean_sheets']
-        football_player = FootballPlayer.objects.get(pk=self._football_player_id)
+        football_player = \
+            FootballPlayer.objects.get(pk=self._football_player_id)
         if clean_sheets_data and football_player.position != "GK":
-            raise ValidationError("Incorrect position is specified. \"Clean sheets\" field is allowed only for"
-                                          " the \"GK\" position")
+            raise ValidationError("Incorrect position is specified. "
+                                  "\"Clean sheets\" field is allowed "
+                                  "only for the \"GK\" position")
         return clean_sheets_data
 
     def clean(self):
@@ -117,4 +122,7 @@ class AchievementForm(forms.Form):
         appearances = cleaned_data.get('appearances')
 
         if not (appearances and achievement):
-            self.add_error("appearances", "Note: both fields \"Appearances\" and \"Achievement\" are required")
+            self.add_error("appearances", "Note: both fields "
+                                          "\"Appearances\" "
+                                          "and \"Achievement\" "
+                                          "are required")

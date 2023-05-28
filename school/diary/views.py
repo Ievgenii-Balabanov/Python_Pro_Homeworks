@@ -1,13 +1,10 @@
-from django.core.exceptions import ValidationError
 from django.http import HttpResponse
-import random
 from django.shortcuts import redirect, render, get_object_or_404
 from django.template import loader
 
 from .forms import AchievementForm, FootballPlayerForm
 from .models import FootballPlayer
 from .models import Achievement
-from django.template.loader import render_to_string
 
 player = None
 
@@ -17,10 +14,12 @@ def index(request):
     if request.POST:
         form_data = FootballPlayerForm(request.POST)
         if form_data.is_valid():
-            some_new_player = FootballPlayer.objects.create(name=form_data.cleaned_data['name'],
-                                                            position=form_data.cleaned_data['position'],
-                                                            club=form_data.cleaned_data['club'],
-                                                            transfer_fee=form_data.cleaned_data['transfer_fee'],)
+            some_new_player = \
+                FootballPlayer.objects.create(
+                    name=form_data.cleaned_data['name'],
+                    position=form_data.cleaned_data['position'],
+                    club=form_data.cleaned_data['club'],
+                    transfer_fee=form_data.cleaned_data['transfer_fee'], )
             global player
             player = some_new_player.id
             print(player)
@@ -55,8 +54,11 @@ def add_achievements(request):
 
 
 def is_exist_check(request):
-    f"""
-    функция проверяет существует ли инстанс с указанным pk и если нет - редирект на страницу формы
+    """
+    функция проверяет существует ли инстанс
+    с указанным pk и если нет - редирект на страницу формы
+    :param request:
+    :return:
     """
     try:
         some_player = FootballPlayer.objects.get(pk=player)
@@ -66,7 +68,6 @@ def is_exist_check(request):
 
 
 def param_update(request):
-    template = loader.get_template("diary/player_update.html")
     if request.POST:
         football_player = FootballPlayer.objects.get(pk=player)
         football_player.name = request.POST.get("name")
@@ -101,7 +102,8 @@ def achievements(request):
 
 def achievements_detail(request, achievement_id):
     reaching = get_object_or_404(Achievement, pk=achievement_id)
-    return render(request, "diary/achievements_detail.html", {"achievement_key": reaching})
+    return render(request, "diary/achievements_detail.html",
+                  {"achievement_key": reaching})
 
 
 def add_achievement(request, football_player_id):
@@ -109,16 +111,20 @@ def add_achievement(request, football_player_id):
         if not player:
             return redirect(index)
     new_player = get_object_or_404(FootballPlayer, pk=football_player_id)
-    form_data = AchievementForm(request.POST, football_player_id=football_player_id)
+    form_data = AchievementForm(request.POST,
+                                football_player_id=football_player_id)
     if form_data.is_valid():
-        Achievement.objects.create(football_player_achievements=new_player,
-                                   tournament=form_data.cleaned_data['tournament'],
-                                   achievement=form_data.cleaned_data['achievement'],
-                                   scored_goals=form_data.cleaned_data['scored_goals'],
-                                   appearances=form_data.cleaned_data['appearances'],
-                                   clean_sheets=form_data.cleaned_data['clean_sheets'],)
+        Achievement.objects. \
+            create(football_player_achievements=new_player,
+                   tournament=form_data.cleaned_data['tournament'],
+                   achievement=form_data.cleaned_data['achievement'],
+                   scored_goals=form_data.cleaned_data['scored_goals'],
+                   appearances=form_data.cleaned_data['appearances'],
+                   clean_sheets=form_data.cleaned_data['clean_sheets'], )
 
-    return render(request, "diary/player.html", {"players": new_player, "error_message": form_data.errors})
+    return render(request, "diary/player.html",
+                  {"players": new_player,
+                   "error_message": form_data.errors})
 
 
 print(player)
