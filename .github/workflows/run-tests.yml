@@ -13,4 +13,4 @@ jobs:
       - name: Install Requirements
         run: pip install flake8
       - name: Execute flake8 linter
-        run: flake8 --config school/.flake8
+        run: flake8 --config school/..flake8
