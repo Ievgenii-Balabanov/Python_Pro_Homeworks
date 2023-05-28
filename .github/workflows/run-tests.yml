@@ -15,4 +15,4 @@ jobs:
       - name: Execute flake8 linter
         run: flake8 --config school/.flake8
       - name: Execute Pytests
-        rin: pytest
+        run: pytest
