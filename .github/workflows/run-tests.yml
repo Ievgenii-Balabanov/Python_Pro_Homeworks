@@ -17,4 +17,4 @@ jobs:
       - name: Execute Pytests
         env:
           DJANGO_SETTINGS_MODULE: school.settings
-        run: pytest
+        run: pytest school
