@@ -53,6 +53,19 @@ def add_achievements(request):
     return HttpResponse(response)
 
 
+# def is_exist_check(request):
+#     """
+#     функция проверяет существует ли инстанс
+#     с указанным pk и если нет - редирект на страницу формы
+#     :param request:
+#     :return:
+#     """
+#     try:
+#         some_player = FootballPlayer.objects.get(pk=player)
+#         return HttpResponse(some_player)
+#     except Exception:
+#         return redirect(index)
+
 def is_exist_check(request):
     """
     функция проверяет существует ли инстанс
