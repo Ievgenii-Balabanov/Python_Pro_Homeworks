@@ -25,8 +25,7 @@ class Migration(migrations.Migration):
                 ("name", models.CharField(max_length=30)),
                 ("position", models.CharField(max_length=5, null=True)),
                 ("transfer_fee", models.IntegerField()),
-                ("club", models.CharField(blank=True,
-                                          max_length=13, null=True)),
+                ("club", models.CharField(blank=True, max_length=13, null=True)),
             ],
         ),
         migrations.CreateModel(
